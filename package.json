@@ -1,0 +1,9 @@
+{
+  "name": "facebook_event_data_fetcher",
+  "version": "1.0.0",
+  "dependencies": {
+    "curl": "^0.1.4",
+    "shell-exec": "^1.0.2"
+  },
+  "devDependencies": {}
+}
