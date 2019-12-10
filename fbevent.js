@@ -4,7 +4,7 @@ const shellExec = require('shell-exec');
 
 const USER_ID = '3258104107540071';
 const FIELDS = 'end_time';
-const ACCESS_TOKEN = 'EAAGLakOhBHsBAKy0WpZBuk7qUbzN4jsWuARJ71kTbjASZCSLyZBfXT8aizQ6hW4dLEOXMNvwF6Q8iUEK1sCmqkRc1ydPeFWQnKrZBDoXWURccBnSp9dHWf95F2w6t1gj0FNV5O8ELCP3QpZAGefUiAYvzL01T8vAnmtXgIC0Q9SaYnt5ZCAQs1Ih8SpZC6UC3pP1vIVFDb8MgZDZD';
+const ACCESS_TOKEN = 'EAAGLakOhBHsBAHK7eniZBRSnOyiJkdkI4VYC0sEwxGmdRbYiIHhXZAwcCrqRyMfs6YaqNXKVCknr10IpsPXspg2ygZAyNdoROqYPZBF0AG7eOYffhaqItTgAB8hrx1GZCUA2wsoW0ZBRYBL3HtDLu5PJOyAPnhwiwXrPkqe13m3ZCS75xOcIKZA3dCbQdcTJAVpnyH1y7UeU3UgnPZCLkaCx1DwBHWQe3YDwZD';
 
 shellExec(
     "curl \"https://graph.facebook.com/" +
@@ -22,7 +22,7 @@ shellExec(
     const RAW_EVENT_DATA = JSON.parse(stdout.stdout);
 
     const WANTED_EVENT_DATA = {
-        "event_name": RAW_EVENT_DATA.data['name'],
+        "event_name": RAW_EVENT_DATA.data,
         "start_time": RAW_EVENT_DATA.start_time,
         "end_time": RAW_EVENT_DATA.end_time,
         "cover": RAW_EVENT_DATA.cover,
@@ -30,5 +30,5 @@ shellExec(
     };
     console.log(WANTED_EVENT_DATA);
     console.log("\n");
-    //console.log(RAW_EVENT_DATA);
+    console.log(RAW_EVENT_DATA);
 });
