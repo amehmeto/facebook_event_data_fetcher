@@ -11,7 +11,7 @@ const USER_ACCESS_TOKEN = 'EAAGLakOhBHsBAHK7eniZBRSnOyiJkdkI4VYC0sEwxGmdRbYiI' +
     'VpnyH1y7UeU3UgnPZCLkaCx1DwBHWQe3YDwZD';
 
 function parse(shellOutput) {
-    return JSON.parse(shellOutput).data[0];
+    return JSON.parse(shellOutput).data[0]
 }
 
 function convertToReadableFormat(time) {
@@ -19,7 +19,7 @@ function convertToReadableFormat(time) {
     const DATE = time.match(FACEBOOK_DATE_PATTERN);
 
     return DATE[3] + '/' + DATE[2] + '/' + DATE[1] + ' ' + DATE[4] + ':'
-        + DATE[5] ;
+        + DATE[5]
 }
 
 async function getAccessTokenObject() {
@@ -29,7 +29,7 @@ async function getAccessTokenObject() {
         "&fb_exchange_token=" + USER_ACCESS_TOKEN + "\"";
 
     const SHELL_OUTPUT = await shellExec(CURL_REQUEST);
-    return JSON.parse(SHELL_OUTPUT.stdout);
+    return JSON.parse(SHELL_OUTPUT.stdout)
 }
 
 function rearrangeFormat(rawEvent, accessToken) {
@@ -42,17 +42,24 @@ function rearrangeFormat(rawEvent, accessToken) {
     };
 }
 
-getAccessTokenObject().then(token => {
-    const ACCESS_TOKEN_OBJECT = token;
-    const CURL_REQUEST = "curl \"https://graph.facebook.com/"
+async function generateEventCurlRequest(ACCESS_TOKEN_OBJECT){
+    return "curl \"https://graph.facebook.com/"
         + USER_ID + "/events" + "?" +
         "fields=name,start_time,end_time,cover" + "&" +
         "access_token=" + ACCESS_TOKEN_OBJECT.access_token + "\"";
+}
 
-    shellExec(CURL_REQUEST).then(shellOutput => {
-        const RAW_EVENT = parse(shellOutput.stdout);
-        const WANTED_EVENT = rearrangeFormat(RAW_EVENT, ACCESS_TOKEN_OBJECT);
+async function getFormattedEvent(){
+    const ACCESS_TOKEN_OBJECT = await getAccessTokenObject();
+    const CURL_REQUEST = await generateEventCurlRequest(ACCESS_TOKEN_OBJECT);
+    const SHELL_OUTPUT = await shellExec(CURL_REQUEST);
+    const RAW_EVENT = parse(SHELL_OUTPUT.stdout);
+    return rearrangeFormat(RAW_EVENT, ACCESS_TOKEN_OBJECT);
+}
 
-        console.log(WANTED_EVENT);
-    });
-});
+async function displayEvent() {
+    const EVENT_VALUES = await Promise.all([getFormattedEvent()]);
+    console.log(EVENT_VALUES[0]);
+}
+
+displayEvent();
