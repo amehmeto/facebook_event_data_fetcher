@@ -58,8 +58,8 @@ async function getFormattedEvent(){
 }
 
 async function displayEvent() {
-    const EVENT_VALUES = await Promise.all([getFormattedEvent()]);
-    console.log(EVENT_VALUES[0]);
+    const EVENT_VALUES = await getFormattedEvent();
+    console.log(EVENT_VALUES);
 }
 
 displayEvent();
